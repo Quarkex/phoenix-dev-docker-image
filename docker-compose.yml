@@ -1,0 +1,47 @@
+version: '3.7'
+services:
+  phoenix:
+    container_name: ${COMPOSE_PROJECT_NAME}
+    image: ${COMPOSE_PROJECT_NAME}
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        USER_NAME:  ${USER_NAME:-elixir}
+        GROUP_NAME: ${GROUP_NAME:-elixir}
+        USER_UID:   ${USER_UID:-40759}
+        USER_GID:   ${USER_GID:-40759}
+        LANGUAGE:   ${LANGUAGE:-en_US}
+    expose:
+      - ${PORT:-4000}
+    restart: unless-stopped
+    volumes:
+      - ./data/${APP_DIRECTORY:-app}:/home/${USER_NAME:-elixir}/${APP_DIRECTORY:-app}
+    env_file:
+      - .env
+    hostname: ${DOMAIN}
+    environment:
+      LETSENCRYPT_HOST:  ${DOMAIN}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+      VIRTUAL_HOST:      ${DOMAIN}
+      VIRTUAL_PORT:      ${PORT:-4000}
+      TITLE:             ${TITLE:-${APP_NAME:-app}}
+      DOMAIN:            ${DOMAIN}
+      GIT_REPO:          ${GIT_REPO}
+      APP_NAME:          ${APP_NAME:-app}
+      APP_DIRECTORY:     ${APP_DIRECTORY:-app}
+      ERLANG_NAME:       ${ERLANG_NAME:-app}
+      ERLANG_COOKIE:     ${ERLANG_COOKIE:-app}
+      PGUSER:            ${PGUSER:-postgres}
+      PGPASSWORD:        ${PGPASSWORD:-postgres}
+      PGDATABASE:        ${PGDATABASE:-${APP_NAME:-app}}
+      PGPORT:            ${PGPORT:-5432}
+      PGHOST:            ${PGHOST:-psql.${DOMAIN}}
+      MIX_ENV:           ${MIX_ENV:-dev}
+      DATABASE_URL:      ecto://${PGUSER:-postgres}:${PGPASSWORD:-postgres}@${PGHOST:-psql.${DOMAIN}}:${PGPORT:-5432}/${PGDATABASE:-${APP_NAME:-app}}
+    networks:
+      - default
+networks:
+  default:
+    external:
+      name: nginx-proxy
