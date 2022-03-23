@@ -1,0 +1,90 @@
+#!/bin/bash
+SOURCE=${BASH_SOURCE[0]}
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
+  SOURCE=$(readlink "$SOURCE")
+  [[ $SOURCE != /* ]] && SOURCE=$DIR/$SOURCE # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
+
+source "$DIR/.env"
+
+if [ "$1" == "" ]; then
+  echo "Available actions:"
+  echo "  - attach"
+  echo "      Attach an iex to the running elixir instance"
+  echo
+  echo "  - mix"
+  echo "      Calls mix inside the project, within the user context"
+  echo
+  echo "  - git"
+  echo "      Calls git inside the project, within the user context"
+  echo
+  echo "  - vivisection"
+  echo "      Attach an interactive bash to the running instance"
+  echo
+  echo "  - autopsy"
+  echo "      Run the container with a bash, skipping normal CMD"
+  echo
+  echo "  - up"
+  echo "      Start the project"
+  echo
+  echo "  - down"
+  echo "      Stop the project"
+  echo
+  echo "  - logs"
+  echo "      Show the project's logs"
+  echo
+  echo "  - goto_project"
+  echo "      Changes the current directory to the project's folder"
+  echo
+  echo "  - goto_app"
+  echo "      Changes the current directory to the app's folder"
+  echo
+else
+  action="$1"
+  shift
+
+  case "$action" in
+    attach)
+      docker exec -it "'"$COMPOSE_PROJECT_NAME"'" attach
+      ;;
+
+    mix)
+      docker exec -u "'"${USER_NAME:-elixir}"'" -w "'"${APP_DIRECTORY:-app}"'" -it "'"$COMPOSE_PROJECT_NAME"'" mix "$@"
+      ;;
+
+    git)
+      docker exec -u "'"${USER_NAME:-elixir}"'" -w "'"${APP_DIRECTORY:-app}"'" -it "'"$COMPOSE_PROJECT_NAME"'" git "$@"
+      ;;
+
+    vivisection)
+      docker exec -u root -it "'"$COMPOSE_PROJECT_NAME"'" bash
+      ;;
+
+    autopsy)
+      (cd "'"$DIR"'" && docker-compose run --rm -u root --entrypoint /bin/bash phoenix)
+      ;;
+
+    up)
+      (cd "'"$DIR"'" && docker-compose up "$@")
+      ;;
+
+    down)
+      (cd "'"$DIR"'" && docker-compose down "$@")
+      ;;
+
+    logs)
+      (cd "'"$DIR"'" && docker-compose logs "$@")
+      ;;
+
+    goto_project)
+      cd "'"$DIR"'"
+      ;;
+
+    goto_app)
+      cd "'"$DIR"'/data/'"${APP_DIRECTORY:-app}"'"
+      ;;
+
+  esac
+fi
