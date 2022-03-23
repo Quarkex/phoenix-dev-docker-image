@@ -91,6 +91,8 @@ CMD bash -c '\
   [ ! -f ~/"$APP_DIRECTORY/mix.ex" ] \
   && shopt -s dotglob \
   && mix phx.new --app "$APP_NAME" ~/"$APP_DIRECTORY/tmp" \
+  && sed -i "51s/$/,\n      {:credo, \"~> 1.6\", only: [:dev, :test], runtime: false}/g" \
+       ~/"$APP_DIRECTORY/tmp/mix.ex" \
   && mv ~/"$APP_DIRECTORY/tmp"/* ~/"$APP_DIRECTORY/." \
   && rmdir ~/"$APP_DIRECTORY/tmp";\
   cd ~/"$APP_DIRECTORY" \
