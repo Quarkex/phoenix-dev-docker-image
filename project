@@ -97,5 +97,10 @@ else
       cd "'"$DIR"'/data/'"${APP_DIRECTORY:-app}"'"
       ;;
 
+    *)
+      echo "Unknown action: '$action'"
+      exit 1
+      ;;
+
   esac
 fi
