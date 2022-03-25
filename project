@@ -70,31 +70,31 @@ else
       ;;
 
     autopsy)
-      (cd "'"$DIR"'" && docker-compose run --rm -u root --entrypoint /bin/bash phoenix)
+      (cd "$DIR" && docker-compose run --rm -u root --entrypoint /bin/bash phoenix)
       ;;
 
     up)
-      (cd "'"$DIR"'" && docker-compose up "$@")
+      (cd "$DIR" && docker-compose up "$@")
       ;;
 
     down)
-      (cd "'"$DIR"'" && docker-compose down "$@")
+      (cd "$DIR" && docker-compose down "$@")
       ;;
 
     logs)
-      (cd "'"$DIR"'" && docker-compose logs "$@")
+      (cd "$DIR" && docker-compose logs "$@")
       ;;
 
     build)
-      (cd "'"$DIR"'" && docker-compose build "$@")
+      (cd "$DIR" && docker-compose build "$@")
       ;;
 
     goto_project)
-      cd "'"$DIR"'"
+      cd "$DIR"
       ;;
 
     goto_app)
-      cd "'"$DIR"'/data/'"${APP_DIRECTORY:-app}"'"
+      cd "${DIR}/data/${APP_DIRECTORY:-app}"
       ;;
 
     *)
