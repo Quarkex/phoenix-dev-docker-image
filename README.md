@@ -131,6 +131,15 @@ configuration to see if it has to download a git project or spin up a new one.
    ./project logs -f
    ```
 
+We suggest that you add the "project" executable to an alias so you can
+conveniently access it while working somewere else:
+
+   ```sh
+   alias the_project="${PWD}/project"
+   ```
+
+Now you can use `the_project <ACTION> [ARGS]` and it will know what to do.
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
