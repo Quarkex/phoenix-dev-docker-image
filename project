@@ -35,6 +35,9 @@ if [ "$1" == "" ]; then
   echo "  - logs"
   echo "      Show the project's logs"
   echo
+  echo "  - build"
+  echo "      Build the project's docker image"
+  echo
   echo "  - goto_project"
   echo "      Changes the current directory to the project's folder"
   echo
@@ -76,6 +79,10 @@ else
 
     logs)
       (cd "'"$DIR"'" && docker-compose logs "$@")
+      ;;
+
+    build)
+      (cd "'"$DIR"'" && docker-compose build "$@")
       ;;
 
     goto_project)
