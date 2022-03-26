@@ -54,19 +54,19 @@ else
 
   case "$action" in
     attach)
-      docker exec -it "'"$COMPOSE_PROJECT_NAME"'" attach
+      docker exec -it "$COMPOSE_PROJECT_NAME" attach
       ;;
 
     mix)
-      docker exec -u "'"${USER_NAME:-elixir}"'" -w "'"${APP_DIRECTORY:-app}"'" -it "'"$COMPOSE_PROJECT_NAME"'" mix "$@"
+      docker exec -u "${USER_NAME:-elixir}" -w "${APP_DIRECTORY:-app}" -it "$COMPOSE_PROJECT_NAME" mix "$@"
       ;;
 
     git)
-      docker exec -u "'"${USER_NAME:-elixir}"'" -w "'"${APP_DIRECTORY:-app}"'" -it "'"$COMPOSE_PROJECT_NAME"'" git "$@"
+      docker exec -u "${USER_NAME:-elixir}" -w "${APP_DIRECTORY:-app}" -it "$COMPOSE_PROJECT_NAME" git "$@"
       ;;
 
     vivisection)
-      docker exec -u root -it "'"$COMPOSE_PROJECT_NAME"'" bash
+      docker exec -u root -it "$COMPOSE_PROJECT_NAME" bash
       ;;
 
     autopsy)
