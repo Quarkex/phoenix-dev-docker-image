@@ -88,7 +88,7 @@ CMD bash -c '\
   sudo sanitize; \
   [ ! -d ~/"$APP_DIRECTORY/.git" ] && [ "$GIT_REPO" != "" ] \
   && git clone --recursive "$GIT_REPO" ~/"$APP_DIRECTORY";\
-  [ ! -f ~/"$APP_DIRECTORY/mix.ex" ] \
+  [ ! -f ~/"$APP_DIRECTORY/mix.exs" ] \
   && shopt -s dotglob \
   && mix phx.new --app "$APP_NAME" ~/"$APP_DIRECTORY/tmp" \
   && sed -i "51s/$/,\n      {:credo, \"~> 1.6\", only: [:dev, :test], runtime: false}/g" \
