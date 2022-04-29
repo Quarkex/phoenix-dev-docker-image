@@ -54,7 +54,7 @@ else
 
   case "$action" in
     attach)
-      docker exec -it "$COMPOSE_PROJECT_NAME" attach
+      (cd "$DIR" && docker-compose exec -u "${USER_NAME:-elixir}" phoenix /bin/bash -c "/usr/local/bin/attach" )
       ;;
 
     mix)
