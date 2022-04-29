@@ -38,7 +38,7 @@ RUN apt-get update  \
 RUN echo '\
 #!/bin/bash\n\
 cd ~/"$APP_DIRECTORY" \\\n\
-&& iex --name "$(date -u +%Y%m%d%H%M%S)@${DOMAIN:-${HOSTNAME:-localhost}}" --cookie "${ERLANG_COOKIE:-app}" --remsh "app@${DOMAIN:-${HOSTNAME:-localhost}}"\n\
+&& iex --name "$(date -u +%Y%m%d%H%M%S)@${DOMAIN:-${HOSTNAME:-localhost}}" --cookie "${ERLANG_COOKIE:-app}" --remsh "${ERLANG_NAME:-app}@${DOMAIN:-${HOSTNAME:-localhost}}"\n\
 '>/usr/local/bin/attach \
   && chmod +x /usr/local/bin/attach \
   && echo '\
